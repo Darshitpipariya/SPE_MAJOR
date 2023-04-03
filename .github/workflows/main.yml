@@ -1,0 +1,27 @@
+name: Expo CI CD
+
+on:
+  push :
+    branches : [main]
+jobs:
+  Build-for-android:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2.7.0
+      - uses: actions/setup-node@v2.5.2
+        with:
+          node-version: 16.19.1
+      - uses: actions/setup-java@v1.4.4
+        with:
+          java-version: '17.0.6' # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+      - uses: expo/expo-github-action@v8.0.0
+        with:
+          expo-version: 6.3.0
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+      - name: Install deps
+        run: yarn install
+      - name: Build Android APK Bundle
+        run: expo build:android
