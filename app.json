@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SPE_MAJOR_1",
-    "slug": "SPE_MAJOR_1",
+    "slug": "hadmajor1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8b30df49-6ee6-4546-981f-999269ab1360"
+      }
+    },
+    "owner": "darshit2272"
   }
 }
