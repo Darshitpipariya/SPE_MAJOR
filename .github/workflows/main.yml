@@ -19,9 +19,12 @@ jobs:
       - uses: expo/expo-github-action@8.0.0
         with:
           expo-version: 6.3.0
+          eas-version: 3.8.1
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          token: ${{ secrets.EXPO_TOKEN }}
       - name: Install deps
-        run: yarn install
-      - name: Build Android APK Bundle
-        run: expo build:android
+        run: npm install
+      - name: build Android Application
+        run:  eas build --profile preview --platform android --non-interactive
+      
