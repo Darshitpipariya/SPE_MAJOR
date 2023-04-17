@@ -14,6 +14,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow APP to access camera."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -32,6 +40,7 @@
         "projectId": "8b30df49-6ee6-4546-981f-999269ab1360"
       }
     },
+    
     "owner": "darshit2272"
   }
 }
