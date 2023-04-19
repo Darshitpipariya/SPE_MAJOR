@@ -8,16 +8,16 @@ import AppStack from './AppStack';
 
 const AppNavigation = () => {
 
-    const { isLoading , userToken }=useContext(AuthContext);
+    const { isLoading, userinfo }=useContext(AuthContext);
 
     if (isLoading){
-        return (<View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: COLOR.defaultBackGround }}>
+        return (<View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: COLOR.defaultBackGroundColor }}>
             <ActivityIndicator size={'large'} />
         </View>);
     }
     return (
         <NavigationContainer>
-            {userToken!==null?<AppStack/>:<AuthStack/>} 
+            {userinfo !==null?<AppStack/>:<AuthStack/>} 
         </NavigationContainer>
     )
 }

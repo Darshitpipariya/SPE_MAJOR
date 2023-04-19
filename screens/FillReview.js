@@ -5,12 +5,14 @@ import { COLOR } from '../util/config';
 import { TextInput } from 'react-native-gesture-handler';
 import Butten from '../components/Butten';
 const FillReview = ({ navigation, route }) => {
-    const [value, setValue] = useState(0);
+    const [sweeperValue, setSweepervalue] = useState(0);
+    const [moppingValue, setMoppingValue] = useState(0);
     const [review,setReview]=useState('');
 
     const submitReview = () => {
         const result={
-            rating:value,
+            sweeperValue: sweeperValue,
+            moppingValue: moppingValue,
             review:review,
             code:route.params.code,
         }
@@ -24,8 +26,10 @@ const FillReview = ({ navigation, route }) => {
                 <Text style={styles.title}> Submit Review</Text>
             </View>
             <View style={styles.formContainer}>
-
-                <StarRatting value={value} setValue={setValue} containerStyle={styles.ratingContainer}/>
+                <Text>Rate  Sweeper</Text>
+                <StarRatting value={sweeperValue} setValue={setSweepervalue} containerStyle={styles.ratingContainer}/>
+                <Text>Rate  Mopping</Text>
+                <StarRatting value={moppingValue} setValue={setMoppingValue} containerStyle={styles.ratingContainer} />
                 <TextInput multiline={true} numberOfLines={10} onChangeText={(text)=>setReview(text)} style={styles.reviewContainer} placeholder='Write your review'/>
             </View>
             <View style={styles.buttenContainer}>

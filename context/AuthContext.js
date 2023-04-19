@@ -6,7 +6,6 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [userToken, setUserToken] = useState(null);
     const [userinfo, setUserInfo] = useState(null);
     const [userLoginId, setUserLoginId] = useState(null);
     const [isOffline, setIsOffline] = useState();
@@ -15,7 +14,6 @@ const AuthProvider = ({ children }) => {
         room_no: 102,
         name: "Darshit",
         roll_no: "MT2022XX",
-        userToken: "token"
     }
 
     const login = async () => {
@@ -24,11 +22,8 @@ const AuthProvider = ({ children }) => {
             console.log(user);
             await SecureStore.setItemAsync('userLoginId', user.username);
             await SecureStore.setItemAsync('userInfo', JSON.stringify(user));
-            await SecureStore.setItemAsync('userToken', user.userToken);
             setUserInfo(user);
             setUserLoginId(user.username);
-            setUserToken(user.userToken);
-
         } catch (error) {
             console.log("Error");
             logout();
@@ -40,10 +35,8 @@ const AuthProvider = ({ children }) => {
     async function logout() {
         setIsLoading(true);
         await SecureStore.deleteItemAsync('userLoginId');
-        await SecureStore.deleteItemAsync('userToken');
         await SecureStore.deleteItemAsync('userInfo');
         setUserLoginId(null);
-        setUserToken(null);
         setUserInfo(null);
         setIsLoading(false);
     }
@@ -51,17 +44,15 @@ const AuthProvider = ({ children }) => {
     async function isLoggedIn() {
         try {
             setIsLoading(true);
-            let suserTocken = await SecureStore.getItemAsync('userToken');
             let suserLoginId = await SecureStore.getItemAsync('userLoginId');
             let suserInfo = await SecureStore.getItemAsync('userInfo');
             let sJuserInfo = JSON.parse(suserInfo);
 
-            if (suserLoginId !== null && suserTocken !== null && sJuserInfo !== null) {
+            if (suserLoginId !== null && sJuserInfo !== null) {
                 setUserLoginId(suserLoginId);
-                setUserToken(suserTocken);
                 setUserInfo(sJuserInfo);
                 console.log("LoggedIn");
-            } else if (suserLoginId === null || sJuserInfo === null || suserTocken === null) {
+            } else if (suserLoginId === null || sJuserInfo === null) {
                 logout();
             }
             setIsLoading(false);
@@ -71,7 +62,6 @@ const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        console.log("Usertoken " + userToken)
         const unsubscribeNetworkStatus = NetInfo.addEventListener(
             (state) => {
                 const offline = !(state.isConnected && state.isInternetReachable);
@@ -83,7 +73,7 @@ const AuthProvider = ({ children }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ login, logout, isLoggedIn, userLoginId, isLoading, userinfo, userToken, isOffline }}>
+        <AuthContext.Provider value={{ login, logout, isLoggedIn, userLoginId, isLoading, userinfo, isOffline }}>
             {children}
         </AuthContext.Provider>
     )
