@@ -1,23 +1,36 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import StarRatting from '../components/StarRatting'
 import { COLOR } from '../util/config';
 import { TextInput } from 'react-native-gesture-handler';
 import Butten from '../components/Butten';
+import { AuthContext } from '../context/AuthContext';
+import { submitFrom } from '../util/http';
 const FillReview = ({ navigation, route }) => {
-    const [sweeperValue, setSweepervalue] = useState(0);
-    const [moppingValue, setMoppingValue] = useState(0);
+    const [stareValue, setStareValue] = useState(0);
+    
     const [review,setReview]=useState('');
-
-    const submitReview = () => {
-        const result={
-            sweeperValue: sweeperValue,
-            moppingValue: moppingValue,
-            review:review,
-            code:route.params.code,
+    const { token, userinfo ,url}=useContext(AuthContext);
+    const submitReview = async () => {
+        const feedback={
+            hkId:route.params.code,
+            student_roll_no:userinfo.student_roll_no,
+            student_room_no:userinfo.student_room_no,
+            rating: stareValue,
+            remarks:review,
         }
-        console.log("result "+JSON.stringify(result));
-        navigation.goBack();
+        console.log("result " + JSON.stringify(feedback));
+        try {
+            const response=await submitFrom(url,token,feedback);
+            navigation.goBack();
+
+        } catch (error) {
+            console.log(error);
+            console.log("error while submiting form");
+            alert("error while submiting form");
+            navigation.goBack();
+        }
+        
     }
 
     return (
@@ -26,10 +39,8 @@ const FillReview = ({ navigation, route }) => {
                 <Text style={styles.title}> Submit Review</Text>
             </View>
             <View style={styles.formContainer}>
-                <Text>Rate  Sweeper</Text>
-                <StarRatting value={sweeperValue} setValue={setSweepervalue} containerStyle={styles.ratingContainer}/>
-                <Text>Rate  Mopping</Text>
-                <StarRatting value={moppingValue} setValue={setMoppingValue} containerStyle={styles.ratingContainer} />
+                <Text>Rate  Worker</Text>
+                <StarRatting value={stareValue} setValue={setStareValue} containerStyle={styles.ratingContainer}/>
                 <TextInput multiline={true} numberOfLines={10} onChangeText={(text)=>setReview(text)} style={styles.reviewContainer} placeholder='Write your review'/>
             </View>
             <View style={styles.buttenContainer}>

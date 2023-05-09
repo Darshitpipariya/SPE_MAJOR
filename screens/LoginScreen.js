@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { COLOR } from '../util/config';
 import { MaterialIcons } from '@expo/vector-icons';
 import ErrorToast from '../components/ErrorToast';
+import Url from '../components/Url';
 
 export default function Login(props) {
 
@@ -22,6 +23,7 @@ export default function Login(props) {
             setErrorMsg('');
         }, time);
     }
+    
     async function checkUserIdandPassword() {
         if (!isOffline) {
 
@@ -59,6 +61,10 @@ export default function Login(props) {
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.container}>
+                <View style={{width:"100%",position:"absolute",top:15}}>
+                    <Url />
+                </View>
+                
                 <View style={styles.loginLableContainer}>
                     <Text style={styles.loginText}>Login</Text>
                 </View>
@@ -90,9 +96,7 @@ export default function Login(props) {
                 <TouchableOpacity style={styles.loginBtn} onPress={checkUserIdandPassword}>
                     <Text style={{ fontSize: 15, fontWeight: "600", color: "white" }}>Login</Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity style={styles.forgot_button} onPress={() => { navigation.navigate('Forgot Password'); }}>
-                    <Text >Forgot Password?</Text>
-                </TouchableOpacity> */}
+                
 
             </View>
             <View style={{ backgroundColor: COLOR.defaultBackGroundColor }}>

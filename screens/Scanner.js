@@ -23,9 +23,14 @@ const Scanner = ({ navigation }) => {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-        handleBack();
-        navigation.navigate('Fill Review', {code:data});
+
+        if(data.startsWith('HK')){
+            handleBack();
+            navigation.navigate('Fill Review', { code: data });
+        }else{
+            alert('Invalid QR Code');
+            handleBack();
+        }
     };
     const handleBack = () => {
         navigation.goBack();

@@ -4,15 +4,14 @@ import { COLOR } from '../util/config'
 import Butten from '../components/Butten'
 import { AuthContext } from '../context/AuthContext'
 import { MaterialIcons } from '@expo/vector-icons';
-const isDigit=(num)=>{
-    return num.match(/^[0-9]+$/)!=null
-}
+import Url from '../components/Url'
+
 
 const HomeScreen = ({ navigation }) => {
     const { userinfo } = useContext(AuthContext);
     const [codeValue, setCodeValue] = useState('');
     const validateCode = (code) => {
-        if (!isDigit(code)) {
+        if (!code.startsWith('HK')) {
             alert("Enter valid code");
             setCodeValue('');
             return false;
@@ -21,10 +20,10 @@ const HomeScreen = ({ navigation }) => {
     }
     const handleCodeSubmit = () => {
         console.log("submit")
-        if(codeValue.trim().length == 0){
+        if (codeValue.trim().length == 0) {
             alert('Please Enter Code');
             setCodeValue('');
-        }else if(validateCode(codeValue)){
+        } else if (validateCode(codeValue)) {
             navigation.navigate('Fill Review', { code: codeValue });
         }
     }
@@ -38,6 +37,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.helloTextContainer}>
                 <Text style={styles.helloText}>Hello,{userinfo.name}</Text>
             </View>
+            <Url />
             <View style={{ flex: 4, alignItems: "center", width: "100%", justifyContent: "space-evenly" }}>
                 <View style={{ width: "100%", alignItems: "center", }}>
                     <TextInput
@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
                         onChangeText={(val) => { setCodeValue(val) }} />
                     <View style={styles.btnContainer}>
                         <Butten
-                            onPress={ ()=>{handleCodeSubmit()}}>
+                            onPress={() => { handleCodeSubmit() }}>
                             Submit
                         </Butten>
                     </View>
@@ -103,14 +103,14 @@ const styles = StyleSheet.create({
     btnContainer: {
         margin: 10,
     },
-    separator:{
-        flexDirection: "row", 
-        alignItems: "center", 
+    separator: {
+        flexDirection: "row",
+        alignItems: "center",
         justifyContent: "center"
     },
     orText: {
-        fontStyle: "italic", 
-        fontSize: 25, 
+        fontStyle: "italic",
+        fontSize: 25,
         fontWeight: "bold"
     },
     line: {

@@ -1,37 +1,50 @@
 import axios from "axios";
-import { BASE_URL } from "./config";
 
-const api_Endpoint = axios.create({
-    baseURL: BASE_URL,
-    timeout: 5000,
-    headers: {
-        "Content-Type": "application/json",
+
+export const loginhttp = async (url,username, password) => {
+    try{
+        const response = await axios
+            .post(`${url}/api/auth/login/student`,
+                {
+                    username: username,
+                    password: password
+                },
+                {
+                    timeout: 5000,
+                    headers:{
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+        return response;
+    }catch(err){
+        console.log(err);
+        throw err;
     }
-});
-
-export const login = async (username, password) => {
-    const response = await api_Endpoint
-        .post("/login",
-            {
-                username: username,
-                password: password
-            }
-        )
+    
 }
 
-export const verifyCode = async (code) => {
-    const response = await api_Endpoint
-        .post("/verifyCode",
-            {
-                code: code
-            }
-        )
-}
-export const submitFrom = async (data) => {
-    const response = await api_Endpoint
-        .post("/submitForm",
-            {
-                data: data
-            }
-        )
+
+export const submitFrom = async (url,token,feedback) => {
+    try {
+        const response = await axios
+            .post(`${url}/api/feedback/submit`,
+                {
+                    feedback: feedback
+                },
+                {
+                    timeout: 5000,
+                    headers: {
+                        token: token,
+                        "Content-Type": "application/json",
+                    }
+                }
+            )    
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+
+    }
+    
 }

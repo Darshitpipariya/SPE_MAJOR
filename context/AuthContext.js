@@ -1,33 +1,49 @@
 import React, { createContext, useEffect, useState } from 'react'
 import * as SecureStore from 'expo-secure-store';
 import NetInfo from '@react-native-community/netinfo';
+import { loginhttp } from '../util/http';
+import { BASE_URL } from '../util/config';
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [userinfo, setUserInfo] = useState(null);
+    const [token, setToken] = useState(null);
     const [userLoginId, setUserLoginId] = useState(null);
     const [isOffline, setIsOffline] = useState();
-    const user = {
-        username: "user123",
-        room_no: 102,
-        name: "Darshit",
-        roll_no: "MT2022XX",
-    }
+    const [url, setUrl] = useState(BASE_URL);
+    // const response = {
+    //     data:{
+    //         name: "user123",
+    //         dob: 102,
+    //         gender: "M",
+    //         student_roll_no: "MT2022XX",
+    //         student_room_no: "B101",
+    //     },
+    //     token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzYxZjgzYjE1YzY1MjA4MzEyNiIsImlhdCI"
+        
+    // }
 
-    const login = async () => {
+    const login = async (username,password) => {
+        console.log('Username'+ username);
+        console.log('Password'+ password);
+
         setIsLoading(true);
         try {
-            console.log(user);
-            await SecureStore.setItemAsync('userLoginId', user.username);
-            await SecureStore.setItemAsync('userInfo', JSON.stringify(user));
-            setUserInfo(user);
-            setUserLoginId(user.username);
+            const response=await loginhttp(url,username,password);
+            await SecureStore.setItemAsync('userLoginId', username);
+            await SecureStore.setItemAsync('userInfo', JSON.stringify(response.data));
+            await SecureStore.setItemAsync('token', JSON.stringify(response.token));
+
+            setUserInfo(response.data);
+            setUserLoginId(username);
+            setToken(response.token);
+
         } catch (error) {
-            console.log("Error");
             logout();
             setIsLoading(false);
+            throw error;
         }
         setIsLoading(false);
     }
@@ -36,8 +52,10 @@ const AuthProvider = ({ children }) => {
         setIsLoading(true);
         await SecureStore.deleteItemAsync('userLoginId');
         await SecureStore.deleteItemAsync('userInfo');
+        await SecureStore.deleteItemAsync('token');
         setUserLoginId(null);
         setUserInfo(null);
+        setToken(null);
         setIsLoading(false);
     }
 
@@ -46,13 +64,16 @@ const AuthProvider = ({ children }) => {
             setIsLoading(true);
             let suserLoginId = await SecureStore.getItemAsync('userLoginId');
             let suserInfo = await SecureStore.getItemAsync('userInfo');
+            let stoken=await SecureStore.getItemAsync('token');
             let sJuserInfo = JSON.parse(suserInfo);
 
-            if (suserLoginId !== null && sJuserInfo !== null) {
+            if (suserLoginId !== null && sJuserInfo !== null && stoken !== null) {
                 setUserLoginId(suserLoginId);
                 setUserInfo(sJuserInfo);
+                setToken(stoken);
                 console.log("LoggedIn");
-            } else if (suserLoginId === null || sJuserInfo === null) {
+            } 
+            else if (suserLoginId === null || sJuserInfo === null || stoken !== null) {
                 logout();
             }
             setIsLoading(false);
@@ -73,7 +94,7 @@ const AuthProvider = ({ children }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ login, logout, isLoggedIn, userLoginId, isLoading, userinfo, isOffline }}>
+        <AuthContext.Provider value={{ login, logout, isLoggedIn, setUrl,url,token, userLoginId, isLoading, userinfo, isOffline }}>
             {children}
         </AuthContext.Provider>
     )

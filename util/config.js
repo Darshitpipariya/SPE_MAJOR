@@ -1,4 +1,4 @@
-export const BASE_URL=`172.16.201.120:13131`;
+export const BASE_URL=`192.168.0.110:13131`;
 
 export const COLOR={
     defaultBackGroundColor: "#e8f2ff",
