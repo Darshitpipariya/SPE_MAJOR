@@ -1,5 +1,5 @@
 // Base Url for Application
-export const BASE_URL=`192.168.0.110:13131`;
+export const BASE_URL=`http://192.168.0.110:13131`;
 
 
 export const COLOR={

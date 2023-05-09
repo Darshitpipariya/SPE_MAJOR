@@ -10,12 +10,12 @@ export const loginhttp = async (url,username, password) => {
                     password: password
                 },
                 {
-                    timeout: 5000,
                     headers:{
                         "Content-Type": "application/json",
                     }
                 }
             )
+        
         return response;
     }catch(err){
         console.log(err);
@@ -33,7 +33,6 @@ export const submitFrom = async (url,token,feedback) => {
                     feedback: feedback
                 },
                 {
-                    timeout: 5000,
                     headers: {
                         token: token,
                         "Content-Type": "application/json",

@@ -32,13 +32,14 @@ const AuthProvider = ({ children }) => {
         setIsLoading(true);
         try {
             const response=await loginhttp(url,username,password);
+            console.log(JSON.stringify(response));
             await SecureStore.setItemAsync('userLoginId', username);
-            await SecureStore.setItemAsync('userInfo', JSON.stringify(response.data));
-            await SecureStore.setItemAsync('token', JSON.stringify(response.token));
+            await SecureStore.setItemAsync('userInfo', JSON.stringify(response.data.data));
+            await SecureStore.setItemAsync('token', JSON.stringify(response.data.token));
 
-            setUserInfo(response.data);
+            setUserInfo(response.data.data);
             setUserLoginId(username);
-            setToken(response.token);
+            setToken(response.data.token);
 
         } catch (error) {
             logout();
