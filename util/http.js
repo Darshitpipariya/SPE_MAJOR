@@ -18,7 +18,7 @@ export const loginhttp = async (url,username, password) => {
         
         return response;
     }catch(err){
-        console.log(err);
+        console.log(JSON.stringify(err));
         throw err;
     }
     
@@ -27,6 +27,7 @@ export const loginhttp = async (url,username, password) => {
 
 export const submitFrom = async (url,token,feedback) => {
     try {
+        console.log(url+" "+token+" "+JSON.stringify(feedback));
         const response = await axios
             .post(`${url}/api/feedback/submit`,
                 {
@@ -38,12 +39,32 @@ export const submitFrom = async (url,token,feedback) => {
                         "Content-Type": "application/json",
                     }
                 }
-            )    
+            )
         return response;
     } catch (error) {
+        
         console.log(error);
         throw error;
 
     }
     
+}
+
+export const resetPassword = async (url,username) => {
+    try{
+        const response = await axios
+        .post(`${url}/password-reset/`,
+        {
+            username:username,
+        },
+        {
+            headers:{
+                "Content-Type": "application/json",
+            }
+        }
+        )
+    }catch(err){
+        console.log(JSON.stringify(err));
+        throw err;
+    }
 }

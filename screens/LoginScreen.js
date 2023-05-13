@@ -8,7 +8,7 @@ import ErrorToast from '../components/ErrorToast';
 import Url from '../components/Url';
 
 export default function Login(props) {
-
+    const navigation = props.navigation;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { login, isOffline } = useContext(AuthContext);
@@ -96,7 +96,9 @@ export default function Login(props) {
                 <TouchableOpacity style={styles.loginBtn} onPress={checkUserIdandPassword}>
                     <Text style={{ fontSize: 15, fontWeight: "600", color: "white" }}>Login</Text>
                 </TouchableOpacity>
-                
+                <TouchableOpacity style={styles.forgot_button} onPress={() => { navigation.navigate('Forgot Password'); }}>
+                    <Text >Forgot Password?</Text>
+                </TouchableOpacity>
 
             </View>
             <View style={{ backgroundColor: COLOR.defaultBackGroundColor }}>

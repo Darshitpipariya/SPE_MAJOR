@@ -1,5 +1,5 @@
 // Base Url for Application
-export const BASE_URL=`http://192.168.0.110:13131`;
+export const BASE_URL =`http://b5ae-103-39-130-95.ngrok-free.app`;
 
 
 export const COLOR={

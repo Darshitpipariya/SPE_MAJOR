@@ -25,6 +25,7 @@ const HomeScreen = ({ navigation }) => {
             setCodeValue('');
         } else if (validateCode(codeValue)) {
             navigation.navigate('Fill Review', { code: codeValue });
+            setCodeValue('');
         }
     }
 

@@ -29,6 +29,7 @@ const AppStack = () => {
       <Stack.Screen name="Home Screen" component={HomeScreen} options={{headerRight:()=>(<Logout/>)}}/>
       <Stack.Screen name="Scan" options={{ headerShown: false,presentation:'transparentModal' }} component={Scanner} />
       <Stack.Screen name="Fill Review" component={FillReview} />
+      
     </Stack.Navigator>
   )
 }
