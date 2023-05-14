@@ -53,7 +53,7 @@ export const submitFrom = async (url,token,feedback) => {
 export const resetPassword = async (url,username) => {
     try{
         const response = await axios
-        .post(`${url}/password-reset/`,
+        .post(`${url}/password-reset/student`,
         {
             username:username,
         },
